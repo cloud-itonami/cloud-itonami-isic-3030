@@ -30,6 +30,8 @@ No automated advice can dispatch a robot action the governor refuses, suppress
 an operating record, or disclose sensitive data without governor approval and
 audit evidence.
 
+A live sample of the operator console (robotics safety console, shared template) is rendered in [docs/samples/operator-console.html](docs/samples/operator-console.html) — pure-data HTML output of `kotoba.robotics.ui`.
+
 ## Capability layer
 
 Resolves via [`kotoba-lang/industry`](https://github.com/kotoba-lang/industry)
