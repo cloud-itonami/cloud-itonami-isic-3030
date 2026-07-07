@@ -1,4 +1,4 @@
-{:itonami.blueprint/id "cloud-itonami-3030"
+{:itonami.blueprint/id "cloud-itonami-isic-3030"
  :itonami.blueprint/name "Aircraft and Aerospace Manufacturing Enablement"
  :itonami.blueprint/isic-rev5 "3030"
  :itonami.blueprint/domain :manufacturing/aerospace
@@ -7,4 +7,6 @@
  :itonami.blueprint/governor :aerospace-manufacturing-governor
  :itonami.blueprint/robotics true
  :itonami.blueprint/required-technologies [:robotics :cae :cfd :dmn :bpmn :audit-ledger :optimization]
- :itonami.blueprint/status :public-oss}
+ :itonami.blueprint/optional-technologies [:eda :telemetry]
+ :itonami.blueprint/status :public-oss
+ :itonami.blueprint/maturity :implemented}
