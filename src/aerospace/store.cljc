@@ -34,10 +34,9 @@
   immutable log -- the audit trail a community trusting an aerospace
   manufacturer needs, and the evidence a manufacturer needs if a
   dispatch or airworthiness-evidence decision is later disputed."
-  (:require #?(:clj  [clojure.edn :as edn]
-               :cljs [cljs.reader :as edn])
-            [aerospace.registry :as registry]
-            [langchain.db :as d]))
+  (:require [aerospace.registry :as registry]
+            [langchain.db :as d]
+            [langchain-store.core :as ls]))
 
 (defprotocol Store
   (assembly [s id])
@@ -189,8 +188,8 @@
    :dispatch-sequence/jurisdiction    {:db/unique :db.unique/identity}
    :evidence-sequence/jurisdiction    {:db/unique :db.unique/identity}})
 
-(defn- enc [v] (pr-str v))
-(defn- dec* [s] (when s (edn/read-string s)))
+;; EDN-blob codec (`enc`/`dec*`) comes from `kotoba-lang/langchain-store`
+;; (ADR-2607141600) instead of being hand-rolled here.
 
 (defn- assembly->tx [{:keys [id unit-name dimensional-tolerance-actual dimensional-tolerance-min dimensional-tolerance-max
                              ndt-defect-unresolved?
@@ -236,25 +235,25 @@
          (map #(pull->assembly (d/pull (d/db conn) assembly-pull [:assembly/id %])))
          (sort-by :id)))
   (ndt-screen-of [_ id]
-    (dec* (d/q '[:find ?p . :in $ ?aid
+    (ls/dec* (d/q '[:find ?p . :in $ ?aid
                 :where [?k :ndt-screen/assembly-id ?aid] [?k :ndt-screen/payload ?p]]
               (d/db conn) id)))
   (requirements-verification-of [_ assembly-id]
-    (dec* (d/q '[:find ?p . :in $ ?aid
+    (ls/dec* (d/q '[:find ?p . :in $ ?aid
                 :where [?a :verification/assembly-id ?aid] [?a :verification/payload ?p]]
               (d/db conn) assembly-id)))
   (ledger [_]
     (->> (d/q '[:find ?s ?f :where [?e :ledger/seq ?s] [?e :ledger/fact ?f]] (d/db conn))
          (sort-by first)
-         (mapv (comp dec* second))))
+         (mapv (comp ls/dec* second))))
   (dispatch-history [_]
     (->> (d/q '[:find ?s ?r :where [?e :dispatch/seq ?s] [?e :dispatch/record ?r]] (d/db conn))
          (sort-by first)
-         (mapv (comp dec* second))))
+         (mapv (comp ls/dec* second))))
   (evidence-history [_]
     (->> (d/q '[:find ?s ?r :where [?e :evidence/seq ?s] [?e :evidence/record ?r]] (d/db conn))
          (sort-by first)
-         (mapv (comp dec* second))))
+         (mapv (comp ls/dec* second))))
   (next-dispatch-sequence [_ jurisdiction]
     (or (d/q '[:find ?n . :in $ ?j
               :where [?e :dispatch-sequence/jurisdiction ?j] [?e :dispatch-sequence/next ?n]]
@@ -275,10 +274,10 @@
       (d/transact! conn [(assembly->tx value)])
 
       :verification/set
-      (d/transact! conn [{:verification/assembly-id (first path) :verification/payload (enc payload)}])
+      (d/transact! conn [{:verification/assembly-id (first path) :verification/payload (ls/enc payload)}])
 
       :ndt-screen/set
-      (d/transact! conn [{:ndt-screen/assembly-id (first path) :ndt-screen/payload (enc payload)}])
+      (d/transact! conn [{:ndt-screen/assembly-id (first path) :ndt-screen/payload (ls/enc payload)}])
 
       :assembly/mark-dispatched
       (let [assembly-id (first path)
@@ -288,7 +287,7 @@
         (d/transact! conn
                      [(assembly->tx (assoc assembly-patch :id assembly-id))
                       {:dispatch-sequence/jurisdiction jurisdiction :dispatch-sequence/next next-n}
-                      {:dispatch/seq (count (dispatch-history s)) :dispatch/record (enc (get result "record"))}])
+                      {:dispatch/seq (count (dispatch-history s)) :dispatch/record (ls/enc (get result "record"))}])
         result)
 
       :assembly/mark-certified
@@ -299,12 +298,12 @@
         (d/transact! conn
                      [(assembly->tx (assoc assembly-patch :id assembly-id))
                       {:evidence-sequence/jurisdiction jurisdiction :evidence-sequence/next next-n}
-                      {:evidence/seq (count (evidence-history s)) :evidence/record (enc (get result "record"))}])
+                      {:evidence/seq (count (evidence-history s)) :evidence/record (ls/enc (get result "record"))}])
         result)
       nil)
     s)
   (append-ledger! [s fact]
-    (d/transact! conn [{:ledger/seq (count (ledger s)) :ledger/fact (enc fact)}])
+    (d/transact! conn [{:ledger/seq (count (ledger s)) :ledger/fact (ls/enc fact)}])
     fact)
   (with-assemblies [s assemblies]
     (when (seq assemblies) (d/transact! conn (mapv assembly->tx (vals assemblies)))) s))
