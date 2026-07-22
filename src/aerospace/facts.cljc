@@ -60,7 +60,16 @@
           :required-evidence ["CAE-Simulationsbericht (CAE-simulation-report)"
                               "CFD-Verifizierungsbericht (CFD-verification-report)"
                               "ZfP-Rückverfolgbarkeitsnachweis (NDT-chain-of-custody-record)"
-                              "Werkstoffzertifikat (material-certification-record)"]}})
+                              "Werkstoffzertifikat (material-certification-record)"]}
+   "FRA" {:name "France"
+          :owner-authority "Direction de la Sécurité de l'Aviation Civile (DSAC, service à compétence nationale rattaché à la Direction Générale de l'Aviation Civile / DGAC) / European Union Aviation Safety Agency (EASA)"
+          :legal-basis "Commission Regulation (EU) No 748/2012 (Part 21: certification of design and production organisations) / EASA CS-25 (Certification Specifications for Large Aeroplanes)"
+          :national-spec "Certification et surveillance de la fabrication et de l'entretien des aéronefs en application des règlements européens (agréments des organismes de production/d'entretien, certificats de navigabilité délivrés par la DSAC)"
+          :provenance "https://www.easa.europa.eu/en/document-library/regulations/commission-regulation-eu-no-7482012"
+          :required-evidence ["Rapport de simulation CAE (CAE-simulation-report)"
+                              "Rapport de vérification CFD (CFD-verification-report)"
+                              "Registre de traçabilité CND (NDT-chain-of-custody-record)"
+                              "Certificat de matériau (material-certification-record)"]}})
 
 (defn spec-basis
   "The jurisdiction's requirement map, or nil -- nil means NO spec-basis,
