@@ -69,7 +69,16 @@
           :required-evidence ["Rapport de simulation CAE (CAE-simulation-report)"
                               "Rapport de vérification CFD (CFD-verification-report)"
                               "Registre de traçabilité CND (NDT-chain-of-custody-record)"
-                              "Certificat de matériau (material-certification-record)"]}})
+                              "Certificat de matériau (material-certification-record)"]}
+   "BRA" {:name "Brazil"
+          :owner-authority "Agência Nacional de Aviação Civil (ANAC)"
+          :legal-basis "RBAC nº 21 (Certificação de produto e artigo aeronáuticos, Emenda nº 15, 08.07.2026) / RBAC nº 25 (Requisitos de Aeronavegabilidade: Aviões Categoria Transporte, Emenda nº 150, 28.08.2025 -- adota integralmente, na língua inglesa, o 14 CFR Part 25 da FAA dos EUA, com um apêndice de diferenças)"
+          :national-spec "Requisitos procedimentais para emissão de certificado de tipo, certificado de organização de produção e certificados de aeronavegabilidade de aeronaves, motores de aeronave e hélices (RBAC 21, Subpartes B/F/G/H)"
+          :provenance "https://www.anac.gov.br/assuntos/legislacao/legislacao-1/rbha-e-rbac/rbac/rbac-21"
+          :required-evidence ["Relatório de simulação CAE (CAE-simulation-report)"
+                              "Relatório de verificação CFD (CFD-verification-report)"
+                              "Registro de rastreabilidade de ensaios não destrutivos - END (NDT-chain-of-custody-record)"
+                              "Certificado de material (material-certification-record)"]}})
 
 (defn spec-basis
   "The jurisdiction's requirement map, or nil -- nil means NO spec-basis,

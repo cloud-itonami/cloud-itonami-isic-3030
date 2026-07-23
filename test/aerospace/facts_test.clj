@@ -10,6 +10,10 @@
   (is (some? (facts/spec-basis "FRA")))
   (is (string? (:provenance (facts/spec-basis "FRA")))))
 
+(deftest bra-has-a-spec-basis
+  (is (some? (facts/spec-basis "BRA")))
+  (is (string? (:provenance (facts/spec-basis "BRA")))))
+
 (deftest unknown-jurisdiction-has-no-fabricated-spec-basis
   (is (nil? (facts/spec-basis "ATL"))))
 
@@ -30,3 +34,9 @@
     (is (seq all))
     (is (facts/required-evidence-satisfied? "FRA" all))
     (is (not (facts/required-evidence-satisfied? "FRA" (rest all))))))
+
+(deftest bra-required-evidence-satisfied-needs-every-item
+  (let [all (facts/evidence-checklist "BRA")]
+    (is (seq all))
+    (is (facts/required-evidence-satisfied? "BRA" all))
+    (is (not (facts/required-evidence-satisfied? "BRA" (rest all))))))
