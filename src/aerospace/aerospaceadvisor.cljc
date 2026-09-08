@@ -28,7 +28,7 @@
      :confidence 0..1}"
   (:require #?(:clj  [clojure.edn :as edn]
                :cljs [cljs.reader :as edn])
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [aerospace.facts :as facts]
             [aerospace.registry :as registry]
             [aerospace.store :as store]

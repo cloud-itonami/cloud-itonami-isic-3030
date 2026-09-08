@@ -26,7 +26,7 @@
   (that is `aerospace.operation`'s `:actuation/dispatch-assembly`/
   `:actuation/issue-airworthiness-evidence`, always human-gated -- see
   README `Actuation`)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (defn- unsigned-certificate
   "Every certificate this actor produces is UNSIGNED -- signature is the
@@ -72,7 +72,7 @@
     (throw (ex-info "assembly-dispatch: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "assembly-dispatch: sequence must be >= 0" {})))
-  (let [dispatch-number (str (str/upper-case jurisdiction) "-DSP-" (zero-pad sequence 6))
+  (let [dispatch-number (str (str/upper jurisdiction) "-DSP-" (zero-pad sequence 6))
         record {"record_id" dispatch-number
                 "kind" "assembly-dispatch-draft"
                 "assembly_id" assembly-id
@@ -97,7 +97,7 @@
     (throw (ex-info "airworthiness-evidence: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "airworthiness-evidence: sequence must be >= 0" {})))
-  (let [evidence-number (str (str/upper-case jurisdiction) "-AWE-" (zero-pad sequence 6))
+  (let [evidence-number (str (str/upper jurisdiction) "-AWE-" (zero-pad sequence 6))
         record {"record_id" evidence-number
                 "kind" "airworthiness-evidence-draft"
                 "assembly_id" assembly-id
