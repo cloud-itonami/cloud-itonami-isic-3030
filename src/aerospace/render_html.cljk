@@ -27,7 +27,7 @@
   here.
 
   The scenario is adapted from this repo's own `aerospace.sim` demo
-  driver (`clojure -M:dev:run`, run BEFORE writing this file to confirm
+  driver (`kbb -M:dev:run`, run BEFORE writing this file to confirm
   it produces a sensible ledger against the real seeded assembly ids
   `assembly-1`..`assembly-4`), so the console shows BOTH dispositions:
   clean paths (one phase-3 auto-commit and four human-approved
@@ -42,7 +42,7 @@
   in. Set iteration is never rendered directly: every set is sorted
   before it reaches the page.
 
-  Usage: `clojure -M:dev:render-html [out-file]`
+  Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
   (:require [kotoba.lang.text :as str]
             [jp-go-dds.skin]
@@ -330,7 +330,7 @@
      (section
       "Run summary"
       (str "Generated at build time by <code>aerospace.render-html</code> "
-           "(<code>clojure -M:dev:render-html</code>) from a real "
+           "(<code>kbb -M:dev:render-html</code>) from a real "
            "<code>aerospace.operation</code> StateGraph run against a fresh "
            "<code>aerospace.store/seed-db</code>. No timestamps, no random ids &mdash; "
            "reruns from the same seed are byte-identical.")
@@ -413,7 +413,7 @@
      "  <p>cloud-itonami-isic-3030 &mdash; ISIC 3030 Manufacture of air and spacecraft "
      "and related machinery. Generated from real actor output by "
      "<code>aerospace.render-html</code>; regenerate with "
-     "<code>clojure -M:dev:render-html</code>.</p>\n"
+     "<code>kbb -M:dev:render-html</code>.</p>\n"
      "</footer>\n"
      "</body></html>\n")))
 
