@@ -200,14 +200,14 @@ stack only -- no bespoke domain capability lib to reference at all.
 
 | File | Role |
 |---|---|
-| `src/aerospace/store.cljc` | **Store** protocol -- `MemStore` ‖ `DatomicStore` (`langchain.db`) + append-only audit ledger + separate assembly-dispatch/airworthiness-evidence history. No dynamically-filed sub-record -- both actuation ops act directly on a pre-seeded assembly, and the double-actuation guards check dedicated `:assembly-dispatched?`/`:airworthiness-certified?` booleans rather than a `:status` value |
-| `src/aerospace/registry.cljc` | Assembly-dispatch + airworthiness-evidence draft records, plus `assembly-tolerance-out-of-range?` -- the FOURTH instance of this fleet's two-sided range check family (`testlab`/`conservation`/`water` established the first three) |
-| `src/aerospace/facts.cljc` | Per-jurisdiction airworthiness-certification catalog with an official spec-basis citation per entry, honest coverage reporting |
-| `src/aerospace/aerospaceadvisor.cljc` | **Aerospace Advisor** -- `mock-advisor` ‖ `llm-advisor`; intake/verification/NDT-defect-screening/assembly-dispatch/airworthiness-evidence proposals |
-| `src/aerospace/governor.cljc` | **Aerospace Manufacturing Governor** -- 4 HARD checks (spec-basis · evidence-incomplete · assembly-tolerance-out-of-range, pure ground-truth two-sided-range recompute · NDT-defect-unresolved, unconditional evaluation, the TWENTY-SEVENTH grounding of this discipline and FIRST specifically for an NDT-defect concept) + already-dispatched/already-certified guards + 1 soft (confidence/actuation gate) |
-| `src/aerospace/phase.cljc` | **Phase 0→3** -- read-only → assisted intake → assisted verify → supervised (both assembly dispatch and airworthiness-evidence issuance always human; assembly intake is the ONLY auto-eligible op, no direct capital risk) |
-| `src/aerospace/operation.cljc` | **OperationActor** -- langgraph-clj StateGraph |
-| `src/aerospace/sim.cljc` | demo driver |
+| `src/aerospace/store.cljk` | **Store** protocol -- `MemStore` ‖ `DatomicStore` (`langchain.db`) + append-only audit ledger + separate assembly-dispatch/airworthiness-evidence history. No dynamically-filed sub-record -- both actuation ops act directly on a pre-seeded assembly, and the double-actuation guards check dedicated `:assembly-dispatched?`/`:airworthiness-certified?` booleans rather than a `:status` value |
+| `src/aerospace/registry.cljk` | Assembly-dispatch + airworthiness-evidence draft records, plus `assembly-tolerance-out-of-range?` -- the FOURTH instance of this fleet's two-sided range check family (`testlab`/`conservation`/`water` established the first three) |
+| `src/aerospace/facts.cljk` | Per-jurisdiction airworthiness-certification catalog with an official spec-basis citation per entry, honest coverage reporting |
+| `src/aerospace/aerospaceadvisor.cljk` | **Aerospace Advisor** -- `mock-advisor` ‖ `llm-advisor`; intake/verification/NDT-defect-screening/assembly-dispatch/airworthiness-evidence proposals |
+| `src/aerospace/governor.cljk` | **Aerospace Manufacturing Governor** -- 4 HARD checks (spec-basis · evidence-incomplete · assembly-tolerance-out-of-range, pure ground-truth two-sided-range recompute · NDT-defect-unresolved, unconditional evaluation, the TWENTY-SEVENTH grounding of this discipline and FIRST specifically for an NDT-defect concept) + already-dispatched/already-certified guards + 1 soft (confidence/actuation gate) |
+| `src/aerospace/phase.cljk` | **Phase 0→3** -- read-only → assisted intake → assisted verify → supervised (both assembly dispatch and airworthiness-evidence issuance always human; assembly intake is the ONLY auto-eligible op, no direct capital risk) |
+| `src/aerospace/operation.cljk` | **OperationActor** -- langgraph-clj StateGraph |
+| `src/aerospace/sim.cljk` | demo driver |
 | `test/aerospace/*_test.clj` | governor contract · phase invariants · store parity · registry conformance · facts coverage |
 
 ## Business-process coverage (honest)
