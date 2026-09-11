@@ -1,5 +1,5 @@
 (ns aerospace.sim
-  "Demo driver -- `clojure -M:dev:run`. Walks a clean assembly through
+  "Demo driver -- `kbb -M:dev:run`. Walks a clean assembly through
   intake -> requirements verification -> NDT-defect screening ->
   assembly-dispatch proposal (always escalates) -> human approval ->
   commit, then through airworthiness-evidence proposal (always
