@@ -1,5 +1,5 @@
 (ns aerospace.registry-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [aerospace.registry :as r]))
 
 ;; ----------------------------- assembly-tolerance-out-of-range? -----------------------------
