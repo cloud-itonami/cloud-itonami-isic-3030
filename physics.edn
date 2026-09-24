@@ -1,0 +1,46 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": an assembly and inspection robot performs
+;; fastening, composite layup and NDT on airframe structures under the actor,
+;; gated by the independent Aerospace Manufacturing Governor (flight-critical
+;; structures, composites and large assemblies need human sign-off). The
+;; physical work: an arm swinging a drilling/fastening end-effector onto a
+;; fuselage panel, autoclave cure of a laid-up CFRP skin, and an AGV moving a
+;; wing-skin assembly jig between stations.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-3030"
+ :cases
+ [{:id :fastening-effector-to-panel
+   :kind :manipulator
+   :procedure "assembly robot swings its drill/fastening end-effector from the tool stand onto the next row of fastener holes on a fuselage panel"
+   :params {:l1-m 1.00 :l2-m 0.90 :m1-kg 40.0 :m2-kg 25.0
+            :from [1.20 0.30] :to [0.60 1.40] :duration-s 2.0 :steps 500}
+   :sweep {:param :payload-kg :values [20.0 35.0 50.0 70.0 90.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 2500.0 :basis "estimate: continuous shoulder torque of a ~150 kg-payload industrial arm class used for drilling end-effectors"}
+   :boundary {:lo 5.0 :hi 300.0}}
+  {:id :cfrp-skin-autoclave-cure
+   :kind :thermal
+   :procedure "laid-up CFRP wing-skin laminate on its tool heats in a 180 C autoclave until the tool-side (lagging) thermocouple reads 175 C"
+   :params {:conductivity-w-mk 0.60 :density-kg-m3 1550.0 :specific-heat-j-kgk 1100.0
+            :t0-c 20.0 :t-hot-c 180.0 :h-front-w-m2k 50.0 :t-back-ambient-c 180.0 :h-back-w-m2k 8.0
+            :threshold-c 175.0 :duration-s 14400.0 :nodes 11}
+   :sweep {:param :thickness-m :values [0.002 0.004 0.008 0.012 0.020]}
+   :quantity :time-to-threshold-s
+   :limit {:max 5400.0 :basis "estimate: 90-minute heat-up allowance of the cure cycle before the dwell; autoclave h = 50 W/m2K and the tool-side h = 8 W/m2K are estimates"}
+   :boundary {:lo 0.001 :hi 0.05}}
+  {:id :wing-jig-agv-move
+   :kind :transport
+   :procedure "AGV carries a wing-skin assembly jig with the skin on it from the layup cell to the drilling cell (60 m)"
+   :params {:mass-kg 1200.0 :distance-m 60.0 :v-max-mps 0.5 :a-max-mps2 0.10
+            :brake-decel-mps2 0.15 :drive-force-n 2500.0 :crr 0.012
+            :cog-height-m 0.40 :support-half-length-m 1.50 :payload-cog-height-m 1.60
+            :max-time-s 3600.0}
+   :sweep {:param :payload-kg :values [500.0 1000.0 2000.0 3000.0 4500.0]}
+   :quantity :cycle-time-s
+   :limit {:max 180.0 :basis "estimate: a 3-minute cell-to-cell move inside the wing line's station takt"}
+   :boundary {:lo 100.0 :hi 20000.0}}]}
