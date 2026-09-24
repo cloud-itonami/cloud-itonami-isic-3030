@@ -3,7 +3,7 @@
   regress on: `:actuation/dispatch-assembly`/`:actuation/issue-
   airworthiness-evidence` must NEVER be a member of any phase's
   `:auto` set."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [aerospace.phase :as phase]))
 
 (deftest dispatch-assembly-never-auto-at-any-phase
